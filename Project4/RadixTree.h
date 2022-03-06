@@ -10,7 +10,9 @@ public:
 	RadixTree() {
 		m_map = new std::unordered_map<std::string, ValueType>;
 	}
-	~RadixTree() {}
+	~RadixTree() {
+		delete m_map;
+	}
 
 	/**
 	* Inserts pair into tree

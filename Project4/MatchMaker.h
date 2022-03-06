@@ -2,6 +2,8 @@
 #define MATCH_MAKER_H
 
 #include "provided.h"
+#include "MemberDatabase.h"
+#include "AttributeTranslator.h"
 #include <string>
 #include <vector>
 
@@ -19,6 +21,8 @@ public:
 
 private:
 	//unordered set?
+	MemberDatabase m_database;
+	AttributeTranslator m_translator;
 };
 
 #endif

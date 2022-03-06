@@ -4,7 +4,7 @@
 using namespace std;
 
 PersonProfile::PersonProfile(std::string name, std::string email)
-	: m_name(name), m_email(email) {}
+	: m_name(name), m_email(email), m_numPairs(0) {}
 
 PersonProfile::~PersonProfile() {}
 

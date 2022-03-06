@@ -22,8 +22,8 @@ public:
 	/**
 	* Identifies all compatible attribute-value pairs for the 
 	* specified source attributevalue pair and returns a vector 
-	* containing them. If there are no compatible pairs, the 
-	* vector returned is empty.
+	* containing them (no duplicates). If there are no compatible 
+	* pairs, the vector returned is empty.
 	*/
 	std::vector<AttValPair> FindCompatibleAttValPairs(
 		const AttValPair& source) const;
