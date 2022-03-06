@@ -17,13 +17,18 @@ string PersonProfile::GetEmail() const {
 }
 
 void PersonProfile::AddAttValPair(const AttValPair& attval) {
-
+	
 }
 
 int PersonProfile::GetNumAttValPairs() const {
-	return 0;
+	return m_numPairs;
 }
 
 bool PersonProfile::GetAttVal(int attribute_num, AttValPair& attval) const {
-	return false;
+	if(attribute_num < 0 || attribute_num >= m_numPairs)
+		return false;
+
+
+
+	return true;
 }

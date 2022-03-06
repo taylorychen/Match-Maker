@@ -7,7 +7,9 @@
 template <typename ValueType>
 class RadixTree {
 public:
-	RadixTree() {}
+	RadixTree() {
+		m_map = new std::unordered_map<std::string, ValueType>;
+	}
 	~RadixTree() {}
 
 	/**

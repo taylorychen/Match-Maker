@@ -1,7 +1,9 @@
 #ifndef PERSON_PROFILE_H
 #define PERSON_PROFILE_H
 
+#include "RadixTree.h"
 #include <string>
+
 struct AttValPair;
 
 class PersonProfile
@@ -37,6 +39,8 @@ public:
 private:
 	std::string m_name;
 	std::string m_email;
+	int m_numPairs;
+	RadixTree<std::string> m_pairs;
 };
 
 
