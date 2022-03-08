@@ -2,7 +2,10 @@
 #define PERSON_PROFILE_H
 
 #include "RadixTree.h"
+#include "provided.h"
 #include <string>
+#include <set>
+#include <vector>
 
 struct AttValPair;
 
@@ -40,7 +43,8 @@ private:
 	std::string m_name;
 	std::string m_email;
 	int m_numPairs;
-	RadixTree<std::string> m_pairs;
+	RadixTree<std::set<std::string>> m_indices;
+	std::vector<AttValPair> m_pairs;
 };
 
 

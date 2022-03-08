@@ -1,4 +1,5 @@
 #include "PersonProfile.h"
+#include "provided.h"
 #include <string>
 
 using namespace std;
@@ -6,7 +7,9 @@ using namespace std;
 PersonProfile::PersonProfile(std::string name, std::string email)
 	: m_name(name), m_email(email), m_numPairs(0) {}
 
-PersonProfile::~PersonProfile() {}
+PersonProfile::~PersonProfile() {
+		
+}
 
 string PersonProfile::GetName() const {
 	return m_name;
@@ -17,7 +20,26 @@ string PersonProfile::GetEmail() const {
 }
 
 void PersonProfile::AddAttValPair(const AttValPair& attval) {
-	
+	string attribute = attval.attribute;
+	string value = attval.value;
+
+	//points to set of values for given attribute key
+	set<string>* values = m_indices.search(attribute);
+
+	//if no set, then attribute not in map
+	if (values == nullptr) {
+		set<string>* s = new set<string>;
+		m_indices.insert(attribute, *s);		//this seems sus
+		s->insert(value);
+		m_pairs.push_back(attval);
+		m_numPairs++;
+	}
+	//if set exists but doesn't contain value, add value
+	else if (values->find(value) == values->end()) {
+		values->insert(value);
+		m_pairs.push_back(attval);
+		m_numPairs++;
+	}
 }
 
 int PersonProfile::GetNumAttValPairs() const {
@@ -27,8 +49,6 @@ int PersonProfile::GetNumAttValPairs() const {
 bool PersonProfile::GetAttVal(int attribute_num, AttValPair& attval) const {
 	if(attribute_num < 0 || attribute_num >= m_numPairs)
 		return false;
-
-
-
+	attval = m_pairs[attribute_num];
 	return true;
 }
