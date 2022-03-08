@@ -53,7 +53,7 @@ int PersonProfile::GetNumAttValPairs() const {
 }
 
 bool PersonProfile::GetAttVal(int attribute_num, AttValPair& attval) const {
-	if(attribute_num < 0 || attribute_num >= m_numPairs)
+	if (attribute_num < 0 || attribute_num >= m_numPairs)
 		return false;
 	attval = m_pairs[attribute_num];
 	return true;

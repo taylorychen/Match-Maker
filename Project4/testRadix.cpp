@@ -27,7 +27,7 @@ int main() {
 	AttributeTranslator at;
 	//at.Load("translator.txt");
 
-	
+
 	testPP();
 
 }
@@ -65,7 +65,7 @@ void testPP() {
 	assert(av == av4);
 
 	assert(!pp.GetAttVal(5, av));
-	
+
 	pp.AddAttValPair(av1);
 	assert(pp.GetNumAttValPairs() == 4);
 

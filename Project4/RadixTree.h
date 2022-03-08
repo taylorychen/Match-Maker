@@ -20,7 +20,7 @@ public:
 	* Inserts pair into tree
 	* Replaces value with new value if key is already in map
 	*/
-	void insert(std::string key, const ValueType& value) { 
+	void insert(std::string key, const ValueType& value) {
 		ValueType v = value;
 		m_map->insert_or_assign(key, v);
 		//m_map.insert_or_assign(key, &value);
@@ -37,8 +37,8 @@ public:
 			return nullptr;
 		return &(*(p)).second;
 		//return &(*(m_map->find(key))).second;
-		
-		
+
+
 		//return (*(m_map.find(key))).second;
 		//ValueType* out = &(*(m_map->find(key))).second;
 		//return out ;

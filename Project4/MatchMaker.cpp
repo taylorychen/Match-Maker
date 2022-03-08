@@ -12,7 +12,7 @@
 
 using namespace std;
 
-MatchMaker::MatchMaker(const MemberDatabase& mdb, const AttributeTranslator& at) 
+MatchMaker::MatchMaker(const MemberDatabase& mdb, const AttributeTranslator& at)
 	: m_database(mdb), m_translator(at) {}
 
 MatchMaker::~MatchMaker() {
@@ -50,13 +50,13 @@ std::vector<EmailCount> MatchMaker::IdentifyRankedMatches(std::string email,
 	}
 	//create a map to store compatible members mapped to how many compatibles
 	unordered_map<string /*email*/, int> compatibleCounts;
-	
+
 	//iterate through compatible traits to find members that have those traits
 	for (unordered_set<string>::iterator i = allCompatibles.begin(); i != allCompatibles.end(); i++) {
 		AttValPair av;
 		stringToPair(*i, av);
 		vector<string/*email*/> compMembers = m_database.FindMatchingMembers(av);
-		
+
 		//add compMembers to map, incrementing counts for number of matches
 		for (int j = 0; j < compMembers.size(); j++) {
 			unordered_map<string, int>::iterator m = compatibleCounts.find(*i);
@@ -71,14 +71,14 @@ std::vector<EmailCount> MatchMaker::IdentifyRankedMatches(std::string email,
 	}
 	vector<EmailCount> output;
 	for (unordered_map<string, int>::iterator i = compatibleCounts.begin();
-		i != compatibleCounts.end(); i++) 
+		i != compatibleCounts.end(); i++)
 	{
 		EmailCount e((*i).first, (*i).second);
 		output.push_back(e);
 	}
 	sort(output.begin(), output.end(), isWorseMatch);
 
-	
+
 	return output;
 }
 

@@ -32,7 +32,7 @@ bool AttributeTranslator::Load(string filename) {
 	string line;
 	while (getline(infile, line)) {
 		istringstream iss(line);
-		if(!getline(iss, srcAtt, ','))
+		if (!getline(iss, srcAtt, ','))
 			cerr << "couldn't get source attribute\n";
 		if (!getline(iss, srcVal, ','))
 			cerr << "couldn't get source value\n";
