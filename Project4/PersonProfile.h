@@ -45,6 +45,7 @@ private:
 	int m_numPairs;
 	RadixTree<std::set<std::string>> m_indices;
 	std::vector<AttValPair> m_pairs;
+	//std::vector<std::set<std::string>*> m_sets;
 };
 
 

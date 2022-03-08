@@ -4,6 +4,7 @@
 #include "RadixTree.h"
 #include "PersonProfile.h"
 #include "AttributeTranslator.h"
+#include "MemberDatabase.h"
 #include <cassert>
 #include <iostream>
 using namespace std;
@@ -21,8 +22,10 @@ int main() {
 
 	cerr << "RadixTree tests Passed" << endl;
 
+	MemberDatabase md;
+	md.LoadDatabase("members.txt");
 	AttributeTranslator at;
-	at.Load("members.txt");
+	//at.Load("translator.txt");
 
 	
 	testPP();
@@ -60,6 +63,12 @@ void testPP() {
 
 	assert(pp.GetAttVal(3, av));
 	assert(av == av4);
-	cerr << "PersonProfile tests passed" << endl;
+
+	assert(!pp.GetAttVal(5, av));
+	
+	pp.AddAttValPair(av1);
+	assert(pp.GetNumAttValPairs() == 4);
+
+	cerr << "Person Profile tests passed" << endl;
 }
 #endif

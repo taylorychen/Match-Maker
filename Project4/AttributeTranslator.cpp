@@ -24,45 +24,34 @@ bool AttributeTranslator::Load(string filename) {
 		return false;
 	}
 
-	//
-	string name;
-	string email;
-	int numAtt;
-	if (!getline(infile, name)) {
-		cerr << "couldn't get name\n";
-		return false;
-	}
-	if (!getline(infile, email)) {
-		cerr << "couldn't get email\n";
-		return false;
-	}
-	if (!(infile >> numAtt)) {
-		cerr << "couldn't get number of attributes\n";
-		return false;
-	}
-	infile.get();
-	string attribute;
-	string value;
-	for (int i = 0; i < numAtt; i++) {
-		if (!getline(infile, attribute, ',')) {
-			cerr << "couldn't get attribute\n";
-			return false;
-		}
-		if (!getline(infile, value)) {
-			cerr << "couldn't get value\n";
-			return false;
-		}
-	}
-	/*string line;
+	string srcAtt;
+	string srcVal;
+	string compAtt;
+	string compVal;
+
+	string line;
 	while (getline(infile, line)) {
+		istringstream iss(line);
+		if(!getline(iss, srcAtt, ','))
+			cerr << "couldn't get source attribute\n";
+		if (!getline(iss, srcVal, ','))
+			cerr << "couldn't get source value\n";
+		if (!getline(iss, compAtt, ','))
+			cerr << "couldn't get compatible attribute\n";
+		if (!getline(iss, compVal))
+			cerr << "couldn't get compatible value\n";
 
-	}*/
+		//cerr << srcAtt << "," << srcVal << "," << compAtt << "," << compVal << endl;
+		//insert into data structures
+		//m_pairs.insert(srcAtt+srcVal, )
+	}
 
-	return false;
+	return true;
 }
 
 std::vector<AttValPair> AttributeTranslator::FindCompatibleAttValPairs(
 	const AttValPair& source) const {
+
 	vector<AttValPair> v;
 	return v;
 }

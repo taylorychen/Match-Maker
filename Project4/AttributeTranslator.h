@@ -2,7 +2,9 @@
 #define ATTRIBUTE_TRANSLATOR_H
 
 #include <string>
+#include <set>
 #include <vector>
+#include "RadixTree.h"
 #include "provided.h"
 
 class AttributeTranslator
@@ -28,6 +30,8 @@ public:
 	std::vector<AttValPair> FindCompatibleAttValPairs(
 		const AttValPair& source) const;
 
+private:
+	RadixTree<std::set<std::string>> m_pairs;
 
 };
 

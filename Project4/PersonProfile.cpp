@@ -8,7 +8,11 @@ PersonProfile::PersonProfile(std::string name, std::string email)
 	: m_name(name), m_email(email), m_numPairs(0) {}
 
 PersonProfile::~PersonProfile() {
-		
+	/*int size = m_sets.size();
+	for(int i = size - 1; i >= 0; i--) {
+		delete m_sets[i];
+		m_sets.pop_back();
+	}*/
 }
 
 string PersonProfile::GetName() const {
@@ -29,10 +33,12 @@ void PersonProfile::AddAttValPair(const AttValPair& attval) {
 	//if no set, then attribute not in map
 	if (values == nullptr) {
 		set<string>* s = new set<string>;
-		m_indices.insert(attribute, *s);		//this seems sus
 		s->insert(value);
+		m_indices.insert(attribute, *s);		//this seems sus
 		m_pairs.push_back(attval);
 		m_numPairs++;
+		delete s;
+		//m_sets.push_back(s);
 	}
 	//if set exists but doesn't contain value, add value
 	else if (values->find(value) == values->end()) {

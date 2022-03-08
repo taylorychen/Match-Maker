@@ -20,8 +20,9 @@ public:
 	* Inserts pair into tree
 	* Replaces value with new value if key is already in map
 	*/
-	void insert(std::string key, const ValueType& value) {
-		m_map->insert_or_assign(key, value);
+	void insert(std::string key, const ValueType& value) { 
+		ValueType v = value;
+		m_map->insert_or_assign(key, v);
 		//m_map.insert_or_assign(key, &value);
 		//m_map->insert_or_assign(key, &value);
 	}
