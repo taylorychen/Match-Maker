@@ -31,7 +31,6 @@ bool MemberDatabase::LoadDatabase(std::string filename) {
 		return false;
 	}
 
-	
 	string name;
 	string email;
 	string numAttStr;
@@ -50,9 +49,10 @@ bool MemberDatabase::LoadDatabase(std::string filename) {
 			cerr << "couldn't get number of attributes\n";
 			return false;
 		}
-		cerr << name << "\n" << email << "\n";
+		//cerr << name << "\n" << email << "\n";
 
 		PersonProfile* p = new PersonProfile(name, email);
+		m_ppersons.push_back(p);
 
 		numAtt = stoi(numAttStr);
 		string attribute;
@@ -67,22 +67,22 @@ bool MemberDatabase::LoadDatabase(std::string filename) {
 				cerr << "couldn't get value\n";
 				return false;
 			}
-			cerr << attribute << "," << value << "\n";
+			//cerr << attribute << ',' << value << "\n";
 
 			//insert pair into PersonProfile
 			AttValPair av;
-			stringToPair(attribute + "," + value, av);
+			stringToPair(attribute + ',' + value, av);
 			p->AddAttValPair(av);
 
 			//insert email 
 			//points to set of emails for given avpair key
-			set<string>* emailsWithAtt = m_AV_to_Emails.search(attribute + "," + value);
+			set<string>* emailsWithAtt = m_AV_to_Emails.search(attribute + ',' + value);
 			
 			//if no set, then attribute not in map
 			if (emailsWithAtt == nullptr) {
 				set<string> e;
 				e.insert(email);
-				m_AV_to_Emails.insert(attribute + "," + value, e);
+				m_AV_to_Emails.insert(attribute + ',' + value, e);
 			}
 			//if set exists but doesn't contain value, add value
 			else if (emailsWithAtt->find(email) == emailsWithAtt->end()) {
@@ -94,12 +94,9 @@ bool MemberDatabase::LoadDatabase(std::string filename) {
 		if (newLine != "") {
 			cerr << "something is wrong\n";
 		}
-		cerr << "\n";
+		//cerr << "\n";
 	}
-	/*string line;
-	while (getline(infile, line)) {
 
-	}*/
 	return true;
 }
 std::vector<std::string> MemberDatabase::FindMatchingMembers(
@@ -111,10 +108,9 @@ std::vector<std::string> MemberDatabase::FindMatchingMembers(
 	set<string>* emailsWithAtt = m_AV_to_Emails.search(att + ',' + val);
 	//check if this avpair maps to any emails
 	if (emailsWithAtt != nullptr) {
-		for (set<string>::iterator i = emailsWithAtt->begin();
-			i != emailsWithAtt->end(); i++) 
+		for (auto i : *emailsWithAtt) 
 		{
-			output.push_back(*i);
+			output.push_back(i);
 		}
 	}
 	return output;

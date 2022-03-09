@@ -1,22 +1,3 @@
-#if defined(_MSC_VER)  &&  !defined(_DEBUG)
-#include <iostream>
-#include <windows.h>
-#include <conio.h>
-
-struct KeepWindowOpenUntilDismissed
-{
-	~KeepWindowOpenUntilDismissed()
-	{
-		DWORD pids[1];
-		if (GetConsoleProcessList(pids, 1) == 1)
-		{
-			std::cout << "Press any key to close this window . . . ";
-			_getch();
-		}
-	}
-} keepWindowOpenUntilDismissed;
-#endif
-
 #define TEST_TREE
 #ifdef TEST_TREE
 
@@ -29,40 +10,65 @@ struct KeepWindowOpenUntilDismissed
 #include <iostream>
 using namespace std;
 
+void testTranslate();
 void testDatabase();
 void testPP();
+void testTree();
 
 int main() {
-	RadixTree<double> t;
-	t.insert("A", 1.5);
-	assert(*(t.search("A")) - 1.5 <= 0.001);
-	t.insert("A", 1.5);
-	assert(*(t.search("A")) == 1.5);
-	t.insert("A", 100);
-	assert(*(t.search("A")) == 100);
-
-	cerr << "RadixTree tests Passed" << endl;
-
-	AttributeTranslator at;
-	//at.Load("translator.txt");
+	
 
 
+	testTree();
 	testPP();
-	testDatabase();
+	//testDatabase();
+	testTranslate();
 
+}
+
+void testTranslate() {
+	AttributeTranslator at;
+	assert(at.Load("translatorS.txt"));
+
+	AttValPair att("favorite_food", "del taco");
+	vector<AttValPair> result = at.FindCompatibleAttValPairs(att);
+	if (!result.empty()) {
+		std::cout << "Compatible attributes and values:" << std::endl;
+		for (const auto& p : result)
+			std::cout << p.attribute << " -> " << p.value << std::endl;
+	}
 }
 
 void testDatabase() {
 	MemberDatabase md;
-	md.LoadDatabase("Smembers.txt");
+	md.LoadDatabase("membersS.txt");
 
 	AttValPair a("hobby", "painting");
-
 	vector<string> vm = md.FindMatchingMembers(a);
-	for (auto i : vm) {
-		cerr << i << "\n";
-		cerr << "place" << endl;
+	for (int i = 0; i < vm.size(); i++) {
+		cerr << "(" << i+1 << ")\t" << vm[i] << "\n";
 	}
+
+	AttValPair every("hobby", "canyoneering");
+	vector<string> vm2 = md.FindMatchingMembers(every);
+	for (int i = 0; i < vm2.size(); i++) {
+		cerr << "(" << i+1 << ")\t" << vm2[i] << "\n";
+	}
+
+	AttValPair none("trait", "zany");
+	vector<string> vm3 = md.FindMatchingMembers(none);
+	for (int i = 0; i < vm3.size(); i++) {
+		cerr << "(" << i+1 << ")\t" << vm3[i] << "\n";
+	}
+
+	MemberDatabase empty;
+	assert(empty.LoadDatabase("empty.txt"));
+
+
+	assert((*md.GetMemberByEmail("LWall@sky.com")).GetName() == "Leon Wallace");
+	assert((*md.GetMemberByEmail("EmiliTy3@charter.net")).GetName() == "Emilio Tyson");
+
+	cerr << "MemberDatabase tests passed" << endl;
 }
 
 void testPP() {
@@ -104,4 +110,18 @@ void testPP() {
 
 	cerr << "Person Profile tests passed" << endl;
 }
+
+void testTree() {
+	RadixTree<double> t;
+	t.insert("A", 1.5);
+	assert(*(t.search("A")) - 1.5 <= 0.001);
+	t.insert("A", 1.5);
+	assert(*(t.search("A")) == 1.5);
+	t.insert("A", 100);
+	assert(*(t.search("A")) == 100);
+
+	cerr << "RadixTree tests Passed" << endl;
+}
+
+
 #endif

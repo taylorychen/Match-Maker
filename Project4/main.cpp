@@ -1,5 +1,24 @@
 //main.cpp
 
+#if defined(_MSC_VER)  &&  !defined(_DEBUG)
+#include <iostream>
+#include <windows.h>
+#include <conio.h>
+
+struct KeepWindowOpenUntilDismissed
+{
+    ~KeepWindowOpenUntilDismissed()
+    {
+        DWORD pids[1];
+        if (GetConsoleProcessList(pids, 1) == 1)
+        {
+            std::cout << "Press any key to close this window . . . ";
+            _getch();
+        }
+    }
+} keepWindowOpenUntilDismissed;
+#endif
+
 #include "PersonProfile.h"
 #include "AttributeTranslator.h"
 #include "MemberDatabase.h"

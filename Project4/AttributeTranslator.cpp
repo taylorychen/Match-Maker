@@ -1,5 +1,6 @@
 #include "AttributeTranslator.h"
 #include "provided.h"
+#include "utility.h"
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -8,13 +9,9 @@
 using namespace std;
 
 
-AttributeTranslator::AttributeTranslator() {
+AttributeTranslator::AttributeTranslator() {}
 
-}
-
-AttributeTranslator::~AttributeTranslator() {
-
-}
+AttributeTranslator::~AttributeTranslator() {}
 
 bool AttributeTranslator::Load(string filename) {
 	//looks in folder with source files
@@ -41,9 +38,9 @@ bool AttributeTranslator::Load(string filename) {
 		if (!getline(iss, compVal))
 			cerr << "couldn't get compatible value\n";
 
-		//cerr << srcAtt << "," << srcVal << "," << compAtt << "," << compVal << endl;
+		cerr << srcAtt << "," << srcVal << "," << compAtt << "," << compVal << endl;
+		
 		//insert into map
-
 		//points to set of compatible avpairs for given avpair key
 		set<string>* compAVPairs = m_Src_to_Comp.search(srcAtt + "," + srcVal);
 
@@ -51,10 +48,10 @@ bool AttributeTranslator::Load(string filename) {
 		if (compAVPairs == nullptr) {
 			set<string> compAVPair;
 			compAVPair.insert(compAtt + ',' + compVal);
-			m_Src_to_Comp.insert(srcAtt + "," + srcVal, compAVPair);
+			m_Src_to_Comp.insert(srcAtt + ',' + srcVal, compAVPair);
 		}
 		//if set exists but doesn't contain compatible AVPair, add it
-		else if (compAVPairs->find(srcAtt + "," + srcVal) == compAVPairs->end()) {
+		else if (compAVPairs->find(compAtt + ',' + compVal) == compAVPairs->end()) {
 			compAVPairs->insert(compAtt + ',' + compVal);
 		}
 	}
@@ -67,13 +64,20 @@ std::vector<AttValPair> AttributeTranslator::FindCompatibleAttValPairs(
 
 	vector<AttValPair> output;
 
-	string att = source.attribute;
-	string val = source.value;
-	set<string>* compToSource = m_Src_to_Comp.search(att + ',' + val);
-	//check if these 
+	string srcAtt = source.attribute;
+	string srcVal = source.value;
 
-	//finish
-
+	//points to set of compatible pairs for source pair
+	set<string>* compatiblePairs = m_Src_to_Comp.search(srcAtt + ',' + srcVal);
+	
+	//check if there are compatible pairs
+	if (compatiblePairs != nullptr) {
+		for (auto i : *compatiblePairs) {
+			AttValPair compAV;
+			stringToPair(i, compAV);
+			output.push_back(compAV);
+		}
+	}
 
 	return output;
 }
