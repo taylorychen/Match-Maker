@@ -31,7 +31,8 @@ public:
 		const AttValPair& source) const;
 
 private:
-	RadixTree<std::set<std::string>> m_pairs;
+	//maps source attributes to compatible attributes
+	RadixTree<std::set<std::string>> m_Src_to_Comp;
 
 };
 

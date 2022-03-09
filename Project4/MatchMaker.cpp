@@ -13,7 +13,7 @@
 using namespace std;
 
 MatchMaker::MatchMaker(const MemberDatabase& mdb, const AttributeTranslator& at)
-	: m_database(mdb), m_translator(at) {}
+	: m_database(&mdb), m_translator(&at) {}
 
 MatchMaker::~MatchMaker() {
 
@@ -26,7 +26,7 @@ std::vector<EmailCount> MatchMaker::IdentifyRankedMatches(std::string email,
 	vector<EmailCount> out;
 
 	//get person from database
-	const PersonProfile* p = m_database.GetMemberByEmail(email);
+	const PersonProfile* p = m_database->GetMemberByEmail(email);
 	if (p == nullptr)
 		return out;
 
@@ -41,7 +41,7 @@ std::vector<EmailCount> MatchMaker::IdentifyRankedMatches(std::string email,
 
 		string att;
 		string val;
-		vector<AttValPair> compatible = m_translator.FindCompatibleAttValPairs(pair);
+		vector<AttValPair> compatible = m_translator->FindCompatibleAttValPairs(pair);
 		for (auto i : compatible) {
 			//convert to strings to put in hash
 			pairToString(i, att, val);
@@ -55,7 +55,7 @@ std::vector<EmailCount> MatchMaker::IdentifyRankedMatches(std::string email,
 	for (unordered_set<string>::iterator i = allCompatibles.begin(); i != allCompatibles.end(); i++) {
 		AttValPair av;
 		stringToPair(*i, av);
-		vector<string/*email*/> compMembers = m_database.FindMatchingMembers(av);
+		vector<string/*email*/> compMembers = m_database->FindMatchingMembers(av);
 
 		//add compMembers to map, incrementing counts for number of matches
 		for (int j = 0; j < compMembers.size(); j++) {

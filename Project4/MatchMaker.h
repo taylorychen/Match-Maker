@@ -21,8 +21,8 @@ public:
 
 private:
 	//unordered set?
-	MemberDatabase m_database;
-	AttributeTranslator m_translator;
+	const MemberDatabase* m_database;
+	const AttributeTranslator* m_translator;
 };
 
 #endif

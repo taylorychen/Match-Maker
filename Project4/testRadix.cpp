@@ -1,3 +1,22 @@
+#if defined(_MSC_VER)  &&  !defined(_DEBUG)
+#include <iostream>
+#include <windows.h>
+#include <conio.h>
+
+struct KeepWindowOpenUntilDismissed
+{
+	~KeepWindowOpenUntilDismissed()
+	{
+		DWORD pids[1];
+		if (GetConsoleProcessList(pids, 1) == 1)
+		{
+			std::cout << "Press any key to close this window . . . ";
+			_getch();
+		}
+	}
+} keepWindowOpenUntilDismissed;
+#endif
+
 #define TEST_TREE
 #ifdef TEST_TREE
 
@@ -6,9 +25,11 @@
 #include "AttributeTranslator.h"
 #include "MemberDatabase.h"
 #include <cassert>
+#include <vector>
 #include <iostream>
 using namespace std;
 
+void testDatabase();
 void testPP();
 
 int main() {
@@ -22,14 +43,26 @@ int main() {
 
 	cerr << "RadixTree tests Passed" << endl;
 
-	MemberDatabase md;
-	md.LoadDatabase("members.txt");
 	AttributeTranslator at;
 	//at.Load("translator.txt");
 
 
 	testPP();
+	testDatabase();
 
+}
+
+void testDatabase() {
+	MemberDatabase md;
+	md.LoadDatabase("Smembers.txt");
+
+	AttValPair a("hobby", "painting");
+
+	vector<string> vm = md.FindMatchingMembers(a);
+	for (auto i : vm) {
+		cerr << i << "\n";
+		cerr << "place" << endl;
+	}
 }
 
 void testPP() {

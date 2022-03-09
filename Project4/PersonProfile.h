@@ -43,9 +43,8 @@ private:
 	std::string m_name;
 	std::string m_email;
 	int m_numPairs;
-	RadixTree<std::set<std::string>> m_indices;
+	RadixTree<std::set<std::string>> m_Att_to_Val;
 	std::vector<AttValPair> m_pairs;
-	//std::vector<std::set<std::string>*> m_sets;
 };
 
 

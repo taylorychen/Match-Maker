@@ -33,7 +33,7 @@ int maina() {
         ;
 
     std::cout << "Happy dating!" << std::endl;
-    
+    return 0;
 }
 
 bool findMatches(const MemberDatabase& mdb, const AttributeTranslator& at)

@@ -1,7 +1,8 @@
 #ifndef MEMBER_DATABASE_H
 #define MEMBER_DATABASE_H
-
+#include "RadixTree.h"
 #include <string>
+#include <set>
 #include <vector>
 
 struct AttValPair;
@@ -31,8 +32,13 @@ public:
 	* member doesn't exist
 	*/
 	const PersonProfile* GetMemberByEmail(std::string email) const;
-private:
 
+private:
+	RadixTree<PersonProfile*> m_Email_to_Person; //maps emails to PersonProfiles
+	
+	std::vector<PersonProfile*> m_ppersons; //vector of pointers for deletion
+
+	RadixTree<std::set<std::string>> m_AV_to_Emails;	//maps AttVal Pairs to emails
 };
 
 #endif

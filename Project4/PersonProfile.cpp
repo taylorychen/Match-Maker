@@ -1,5 +1,6 @@
 #include "PersonProfile.h"
 #include "provided.h"
+#include "utility.h"
 #include <string>
 
 using namespace std;
@@ -28,17 +29,15 @@ void PersonProfile::AddAttValPair(const AttValPair& attval) {
 	string value = attval.value;
 
 	//points to set of values for given attribute key
-	set<string>* values = m_indices.search(attribute);
+	set<string>* values = m_Att_to_Val.search(attribute);
 
 	//if no set, then attribute not in map
 	if (values == nullptr) {
-		set<string>* s = new set<string>;
-		s->insert(value);
-		m_indices.insert(attribute, *s);		//this seems sus
+		set<string> s;
+		s.insert(value);
+		m_Att_to_Val.insert(attribute, s);		//this seems sus
 		m_pairs.push_back(attval);
 		m_numPairs++;
-		delete s;
-		//m_sets.push_back(s);
 	}
 	//if set exists but doesn't contain value, add value
 	else if (values->find(value) == values->end()) {
