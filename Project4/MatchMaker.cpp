@@ -19,7 +19,7 @@ MatchMaker::~MatchMaker() {
 
 }
 
-bool isWorseMatch(const EmailCount& a, const EmailCount& b);
+bool isBetterMatch(const EmailCount& a, const EmailCount& b);
 
 std::vector<EmailCount> MatchMaker::IdentifyRankedMatches(std::string email,
 	int threshold) const {
@@ -59,13 +59,13 @@ std::vector<EmailCount> MatchMaker::IdentifyRankedMatches(std::string email,
 
 		//add compMembers to map, incrementing counts for number of matches
 		for (int j = 0; j < compMembers.size(); j++) {
-			unordered_map<string, int>::iterator m = compatibleCounts.find(*i);
+			unordered_map<string, int>::iterator m = compatibleCounts.find(compMembers[j]);
 			if (m == compatibleCounts.end()) { //email not in map
 				std::pair<string, int> compMember(compMembers[j], 1);
 				compatibleCounts.insert(compMember);
 			}
 			else {//email is in map so just increment
-				(*m).second++;
+				((*m).second) += 1;
 			}
 		}
 	}
@@ -76,22 +76,23 @@ std::vector<EmailCount> MatchMaker::IdentifyRankedMatches(std::string email,
 		EmailCount e((*i).first, (*i).second);
 		output.push_back(e);
 	}
-	sort(output.begin(), output.end(), isWorseMatch);
-
+	sort(output.begin(), output.end(), isBetterMatch);
+	//pop_back until all members in vector have at least threshold number of matches
 
 	return output;
 }
-
 
 /**
 * Used to sort EmailCounts
 * Highest # matches first, then alphabetical order
 */
-bool isWorseMatch(const EmailCount& a, const EmailCount& b) {
-	if (a.count < b.count)
+bool isBetterMatch(const EmailCount& a, const EmailCount& b) {
+	if (a.count > b.count)
 		return true;
 	else if (a.count == b.count)
 		if (a.email < b.email)
 			return true;
 	return false;
 }
+
+//TODO: binary search for first less than threshold

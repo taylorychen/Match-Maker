@@ -38,7 +38,7 @@ bool AttributeTranslator::Load(string filename) {
 		if (!getline(iss, compVal))
 			cerr << "couldn't get compatible value\n";
 
-		cerr << srcAtt << "," << srcVal << "," << compAtt << "," << compVal << endl;
+		//cerr << srcAtt << "," << srcVal << "," << compAtt << "," << compVal << endl;
 		
 		//insert into map
 		//points to set of compatible avpairs for given avpair key

@@ -119,6 +119,7 @@ std::vector<std::string> MemberDatabase::FindMatchingMembers(
 const PersonProfile* MemberDatabase::GetMemberByEmail(
 	std::string email) const {
 	PersonProfile** p = m_Email_to_Person.search(email);
-
+	if (p == nullptr)
+		return nullptr;
 	return *p;
 }

@@ -1,4 +1,4 @@
-#define TEST_TREE
+//#define TEST_TREE
 #ifdef TEST_TREE
 
 #include "RadixTree.h"
@@ -30,13 +30,28 @@ void testTranslate() {
 	AttributeTranslator at;
 	assert(at.Load("translatorS.txt"));
 
+	//test duplicates
+	//only one way matching
 	AttValPair att("favorite_food", "del taco");
 	vector<AttValPair> result = at.FindCompatibleAttValPairs(att);
 	if (!result.empty()) {
-		std::cout << "Compatible attributes and values:" << std::endl;
+		std::cerr << "Compatible attributes and values:" << std::endl;
 		for (const auto& p : result)
-			std::cout << p.attribute << " -> " << p.value << std::endl;
+			std::cerr << p.attribute << " -> " << p.value << std::endl;
 	}
+	cerr << "\n";
+	AttValPair att2("favorite_food", "taco bell");
+	vector<AttValPair> result2 = at.FindCompatibleAttValPairs(att2);
+	if (!result2.empty()) {
+		std::cerr << "Compatible attributes and values:" << std::endl;
+		for (const auto& p : result2)
+			std::cerr << p.attribute << " -> " << p.value << std::endl;
+	}
+	cerr << "\n";
+	//no matches
+	AttValPair att3("favorite_food", "albertacos");
+	vector<AttValPair> result3 = at.FindCompatibleAttValPairs(att3);
+	assert(result3.empty());
 }
 
 void testDatabase() {
