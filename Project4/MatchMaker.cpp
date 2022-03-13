@@ -69,17 +69,19 @@ std::vector<EmailCount> MatchMaker::IdentifyRankedMatches(std::string email,
 			}
 		}
 	}
-	vector<EmailCount> output;
 	for (unordered_map<string, int>::iterator i = compatibleCounts.begin();
 		i != compatibleCounts.end(); i++)
 	{
 		EmailCount e((*i).first, (*i).second);
-		output.push_back(e);
+		out.push_back(e);
 	}
-	sort(output.begin(), output.end(), isBetterMatch);
+	sort(out.begin(), out.end(), isBetterMatch);
+	
 	//pop_back until all members in vector have at least threshold number of matches
+	while (!out.empty() && out.back().count < threshold)
+		out.pop_back();
 
-	return output;
+	return out;
 }
 
 /**
