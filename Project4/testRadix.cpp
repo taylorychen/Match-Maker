@@ -127,9 +127,9 @@ void testPP() {
 }
 
 void testTree() {
-	RadixTree<double> t;
-	t.insert("AB", 1.2);
-	t.insert("AC", 1.3);
+	//RadixTree<double> t;
+	//t.insert("AB", 1.2);
+	//t.insert("AC", 1.3);
 	//assert(*(t.search("A")) - 1.5 <= 0.001);
 	//t.insert("A", 1.5);
 	//assert(*(t.search("A")) == 1.5);
@@ -138,6 +138,22 @@ void testTree() {
 
 	//t.insert("favA", 1);
 	//t.insert("favB", 2);
+
+	//reach end of currKey
+	//RadixTree<int> a;
+
+	//a.insert("myA", 1);
+	//a.insert("myfav", -1);
+	//a.insert("myfav", 2); //replacing
+	//a.insert("myfavA", 3); //key extends existing key
+
+
+	RadixTree<int> b;
+	b.insert("myA", 1);
+	b.insert("myfavA", 3);
+	b.insert("myfavB", 4); //key forces creation of 2 edges
+	b.insert("myfav", 2);
+	//key is substring of existing key
 
 	cerr << "RadixTree tests Passed" << endl;
 }

@@ -20,9 +20,9 @@ public:
 	* Inserts pair into tree
 	* Replaces value with new value if key is already in map
 	*/
-	void insert(std::string key, const ValueType& value) {		
-		insert(key, value, m_root);
-
+	void insert(std::string key, const ValueType& value) {
+		Node* parent = nullptr;
+		insert(key, value, m_root, parent);
 
 		//ValueType v = value;
 		//m_map->insert_or_assign(key, v);
@@ -44,7 +44,7 @@ private:
 			for (int i = 0; i < 127; i++)
 				m_next[i] = nullptr;
 		}
-		Node(std::string k) : m_key(k), isEnd(true), m_value(nullptr), m_parent(nullptr) {
+		Node(std::string k, ValueType* v) : m_key(k), isEnd(true), m_value(v), m_parent(nullptr) {
 			for (int i = 0; i < 127; i++)
 				m_next[i] = nullptr;
 		}
@@ -60,65 +60,66 @@ private:
 		Node* m_parent;
 	};
 
-	void insert(std::string key, const ValueType& value, Node*& curr) {
+	void insert(std::string key, const ValueType& value, Node*& curr, Node*& parent) {
 		if (curr == nullptr) {
-			curr = new Node(key);
-			curr->m_value = new ValueType(value);
-			
+			curr = new Node(key, new ValueType(value));
 			return;
 		}
+		
 		std::string currKey = curr->m_key;
-		int length = (key.size() >= currKey.size()) ? key.size() : currKey.size();
-		for (int i = 0; i < length; i++) {
+		//int length = (key.size() >= currKey.size()) ? key.size() : currKey.size();
+		for (int i = 0;; i++) {
 			//reach end of currKey
 			if (i == currKey.size()) {
+				if(i != key.size())	//if key is longer, go to next node
+					insert(key.substr(i), value, curr->m_next[key[i]], curr);
 
+				else {	//if both end at same time
+					if (curr->m_value != nullptr) {	//if a value already stored here, delete
+						delete curr->m_value;
+					}
+					curr->m_value = new ValueType(value);
+					curr->isEnd = true;
+				}
+				return;
 			}
 
 			//reach end of inputted key
-			if (i == key.size()) {
-				//split off rest of currKey into child node
-				curr->m_key = currKey.substr(0, i);
-				currKey = currKey.substr(i + 1);
-				insert(currKey.substr(i + 1), , curr->m_next[currKey[i + 1]]);
-				curr->isEnd = true;	//this is now an end node
-				curr->m_value = new ValueType(value);
-			}
+			else if (i == key.size()) {
+				//factor out common part into parent node
+				//this node is an end node and maps to inputted value
+				curr->m_key = currKey.substr(i);
+				Node* commonNode = new Node(currKey.substr(0, i), new ValueType(value));
 
-			//reach end of both at same time 
-			//make curr node also an end node OR
-			//means inputted key is already in tree
+				commonNode->m_next[currKey[i]] = curr;	//have it point to current node
 
-			//if neither is at end of string
-			if (key[i] != currKey[i]) {
-				//check if end node
-				if (curr->isEnd == true) {
-					curr->isEnd = false;
-					ValueType* temp = curr->m_value;
-					curr->m_value = nullptr;
-					curr->m_key = currKey.substr(0, i);
-					key = key.substr(i);
-
-					insert(currKey.substr(i), *temp, curr->m_next[currKey[i]]);
-					insert(key, value, curr->m_next[key[0]]);
-				}
-				else {
-					curr->m_key = currKey.substr(0, i);
-					key = key.substr(i);
-
-					insert(currKey.substr(i), *temp, curr->m_next[currKey[i]]);
-					insert(key, value, curr->m_next[key[0]]);
-				}
+				//set parent to point to this node
+				if (parent == nullptr)
+					m_root = commonNode;
+				else
+					parent->m_next[currKey[0]] = commonNode;
 
 				
+				return;
+			}
 
-				//check that not at end of string
-				/*if ((i + 1) != currKey.size()) {
-					insert(currKey.substr(i+1), value, curr->m_next[currKey[i + 1] - 'a']);
-				}*/
-				/*if (key.size() != 0) {
-					insert(key, value, curr->m_next[key[i + 1] - 'a']);
-				}*/
+			//if neither is at end of string
+			else if (key[i] != currKey[i]) {
+				//factor out common part into a super node
+				curr->m_key = currKey.substr(i);
+				Node* commonNode = new Node(currKey.substr(0, i), false);
+
+				commonNode->m_next[currKey[i]] = curr;	//have it point to current node
+				//create new node off of commonNode with rest of inputted key
+				commonNode->m_next[key[i]] = new Node(key.substr(i), new ValueType(value));
+
+				//set parent to point to this node
+				if (parent == nullptr)
+					m_root = commonNode;
+				else
+					parent->m_next[currKey[0]] = commonNode;
+				
+				return;
 			 }
 		}
 
