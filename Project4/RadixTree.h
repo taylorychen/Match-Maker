@@ -6,14 +6,18 @@
 #include <utility>
 #include <unordered_map>
 
+const int NUM_CHARS = 127;
+
 template <typename ValueType>
 class RadixTree {
 public:
 	RadixTree() : m_root(nullptr) {
-		m_map = new std::unordered_map<std::string, ValueType>;
+		//m_map = new std::unordered_map<std::string, ValueType>;
 	}
 	~RadixTree() {
-		delete m_map;
+		deleteTree(m_root);
+
+		//delete m_map;
 	}
 
 	/**
@@ -33,6 +37,9 @@ public:
 	* Returns nullptr if no key in tree
 	*/
 	ValueType* search(std::string key) const {
+
+		
+
 		auto p = m_map->find(key);
 		if (p == m_map->end())
 			return nullptr;
@@ -41,22 +48,22 @@ public:
 private:
 	struct Node {
 		Node() : m_key(""), isEnd(false), m_value(nullptr), m_parent(nullptr) {
-			for (int i = 0; i < 127; i++)
+			for (int i = 0; i < NUM_CHARS; i++)
 				m_next[i] = nullptr;
 		}
 		Node(std::string k, ValueType* v) : m_key(k), isEnd(true), m_value(v), m_parent(nullptr) {
-			for (int i = 0; i < 127; i++)
+			for (int i = 0; i < NUM_CHARS; i++)
 				m_next[i] = nullptr;
 		}
 		Node(std::string k, bool end) : m_key(k), isEnd(end), m_value(nullptr), m_parent(nullptr) {
-			for (int i = 0; i < 127; i++)
+			for (int i = 0; i < NUM_CHARS; i++)
 				m_next[i] = nullptr;
 		}
 		std::string m_key;
 		bool isEnd;
 
 		ValueType* m_value;
-		Node* m_next[127];
+		Node* m_next[NUM_CHARS];
 		Node* m_parent;
 	};
 
@@ -122,11 +129,53 @@ private:
 				return;
 			}
 		}
+	}
 
+	ValueType* search(std::string key, Node*& curr) {
+		for (int i = 0;; i++) {
+			//reach end of currKey
+			if (i == currKey.size()) {
+				if (i != key.size())	//if key is longer, go to next node
+					search(key.substr(i), value, curr->m_next[key[i]]);
+
+				else {	//if both end at same time
+					//return value
+					
+					if (curr->m_value != nullptr) {	//if a value already stored here, delete
+						delete curr->m_value;
+					}
+					curr->m_value = new ValueType(value);
+					curr->isEnd = true;
+				}
+				return;
+			}
+
+			//reach end of inputted key
+			else if (i == key.size()) {
+				
+			}
+
+			//if neither is at end of string
+			else if (key[i] != currKey[i]) {
+				
+
+				return;
+			}
+		}
+	}
+
+	void deleteTree(Node*& curr) {
+		for (int i = 0; i < NUM_CHARS; i++) {
+			if (curr->m_next[i] != nullptr) {
+				deleteTree(curr->m_next[i]);
+			}
+		}
+		delete curr->m_value;
+		delete curr;
 	}
 
 	Node* m_root;
-	//TODO: implement
+	
 	std::unordered_map<std::string, ValueType>* m_map;
 };
 

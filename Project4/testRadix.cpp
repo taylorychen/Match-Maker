@@ -136,24 +136,54 @@ void testTree() {
 	//t.insert("A", 100);
 	//assert(*(t.search("A")) == 100);
 
-	//t.insert("favA", 1);
-	//t.insert("favB", 2);
-
 	//reach end of currKey
 	//RadixTree<int> a;
-
 	//a.insert("myA", 1);
 	//a.insert("myfav", -1);
-	//a.insert("myfav", 2); //replacing
-	//a.insert("myfavA", 3); //key extends existing key
+	//a.insert("myfav", 2); //replacing a value
+	//a.insert("myfavA", 3); //existing key is a substring of key
 
+	//same as above but testing on top node
+	RadixTree<int> a2;
+	a2.insert("fav", -1);
+	a2.insert("fav", 2); //replacing a value
+	a2.insert("favA", 3); //existing key is a substring of key
 
-	RadixTree<int> b;
-	b.insert("myA", 1);
-	b.insert("myfavA", 3);
-	b.insert("myfavB", 4); //key forces creation of 2 edges
-	b.insert("myfav", 2);
+	//RadixTree<int> b;
+	//b.insert("myA", 1);
+	//b.insert("myfavA", 3);
+	//b.insert("myfavB", 4); //key forces creation of 2 edges
+	//b.insert("myfav", 2);
 	//key is substring of existing key
+
+	//same as above but testing on top node
+	RadixTree<int> b2;
+	b2.insert("favA", 3);
+	b2.insert("favB", 4); //key forces creation of 2 edges
+	b2.insert("fav", 2);
+	//key is substring of existing key
+
+	RadixTree<int> c;
+	c.insert("myA", 1);
+	c.insert("myfavA", 2);
+	c.insert("myfavAB", 4);
+	c.insert("myfavAC", 5);
+	c.insert("myfavD", 3);	//forces creation of 2 edges, non-leaf node
+
+	//same as above but testing on top node
+	RadixTree<int> c2;
+	c2.insert("favA", 2);
+	c2.insert("favAB", 4);
+	c2.insert("favAC", 5);
+	c2.insert("favD", 3);	//forces creation of 2 edges, non-leaf node
+
+	RadixTree<int> d;
+	d.insert("ABC", 1);
+	d.insert("XYZ", 9);	//no common letters
+
+	RadixTree<int> e;
+	e.insert("myfav", 2);
+	e.insert("my", 1);	//key breaks a node in two
 
 	cerr << "RadixTree tests Passed" << endl;
 }
