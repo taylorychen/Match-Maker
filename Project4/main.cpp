@@ -34,7 +34,7 @@ const std::string TRANSLATOR_FILE = "translator.txt";
 
 bool findMatches(const MemberDatabase& mdb, const AttributeTranslator& at);
 
-int main() {
+int mainl() {
     
     MemberDatabase mdb;
     if (!mdb.LoadDatabase(MEMBERS_FILE))

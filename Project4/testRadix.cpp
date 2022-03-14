@@ -1,4 +1,4 @@
-//#define TEST_TREE
+#define TEST_TREE
 #ifdef TEST_TREE
 
 #include "RadixTree.h"
@@ -20,9 +20,9 @@ int main() {
 
 
 	testTree();
-	testPP();
+	//testPP();
 	//testDatabase();
-	testTranslate();
+	//testTranslate();
 
 }
 
@@ -128,12 +128,16 @@ void testPP() {
 
 void testTree() {
 	RadixTree<double> t;
-	t.insert("A", 1.5);
-	assert(*(t.search("A")) - 1.5 <= 0.001);
-	t.insert("A", 1.5);
-	assert(*(t.search("A")) == 1.5);
-	t.insert("A", 100);
-	assert(*(t.search("A")) == 100);
+	t.insert("AB", 1.2);
+	t.insert("AC", 1.3);
+	//assert(*(t.search("A")) - 1.5 <= 0.001);
+	//t.insert("A", 1.5);
+	//assert(*(t.search("A")) == 1.5);
+	//t.insert("A", 100);
+	//assert(*(t.search("A")) == 100);
+
+	//t.insert("favA", 1);
+	//t.insert("favB", 2);
 
 	cerr << "RadixTree tests Passed" << endl;
 }
