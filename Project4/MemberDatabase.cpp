@@ -12,9 +12,7 @@
 
 using namespace std;
 
-MemberDatabase::MemberDatabase() {
-
-}
+MemberDatabase::MemberDatabase() {}
 MemberDatabase::~MemberDatabase() {
 	int size = m_ppersons.size();
 	for(int i = size - 1; i >= 0; i--) {

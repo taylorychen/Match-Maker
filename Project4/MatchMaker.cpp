@@ -15,9 +15,7 @@ using namespace std;
 MatchMaker::MatchMaker(const MemberDatabase& mdb, const AttributeTranslator& at)
 	: m_database(&mdb), m_translator(&at) {}
 
-MatchMaker::~MatchMaker() {
-
-}
+MatchMaker::~MatchMaker() {}
 
 bool isBetterMatch(const EmailCount& a, const EmailCount& b);
 
@@ -44,7 +42,8 @@ std::vector<EmailCount> MatchMaker::IdentifyRankedMatches(std::string email,
 		vector<AttValPair> compatible = m_translator->FindCompatibleAttValPairs(pair);
 		for (auto i : compatible) {
 			//convert to strings to put in hash
-			pairToString(i, att, val);
+			att = i.attribute;
+			val = i.value;
 			allCompatibles.insert(att + ',' + val);
 		}
 	}

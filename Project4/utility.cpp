@@ -21,15 +21,3 @@ bool stringToPair(const std::string s, AttValPair& av) {
 
 	return true;
 }
-
-bool pairToString(const AttValPair av, std::string& att, std::string& val) {
-	//check for comma
-	if (av.attribute.find(',') != string::npos && av.value.find(',') != string::npos) {
-		cerr << "unable to convert AV pair to string" << endl;
-		return false;
-	}
-	att = av.attribute;
-	val = av.value;
-
-	return true;
-}

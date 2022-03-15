@@ -11,9 +11,7 @@ const int NUM_CHARS = 127;
 template <typename ValueType>
 class RadixTree {
 public:
-	RadixTree() : m_root(nullptr) {
-		//m_map = new std::unordered_map<std::string, ValueType>;
-	}
+	RadixTree() : m_root(nullptr) {}
 	~RadixTree() {
 		deleteTree(m_root);
 
@@ -27,9 +25,6 @@ public:
 	void insert(std::string key, const ValueType& value) {
 		Node* parent = nullptr;
 		insert(key, value, m_root, parent);
-
-		//ValueType v = value;
-		//m_map->insert_or_assign(key, v);
 	}
 
 	/**
@@ -37,13 +32,7 @@ public:
 	* Returns nullptr if no key in tree
 	*/
 	ValueType* search(std::string key) const {
-
-		
-
-		auto p = m_map->find(key);
-		if (p == m_map->end())
-			return nullptr;
-		return &(*(p)).second;
+		return search(key, m_root);
 	}
 private:
 	struct Node {
@@ -72,9 +61,9 @@ private:
 			curr = new Node(key, new ValueType(value));
 			return;
 		}
-
+		
 		std::string currKey = curr->m_key;
-		//int length = (key.size() >= currKey.size()) ? key.size() : currKey.size();
+
 		for (int i = 0;; i++) {
 			//reach end of currKey
 			if (i == currKey.size()) {
@@ -131,35 +120,27 @@ private:
 		}
 	}
 
-	ValueType* search(std::string key, Node*& curr) {
+	ValueType* search(std::string key, Node* curr) const {
+		if (curr == nullptr)
+			return nullptr;
+		std::string currKey = curr->m_key;
 		for (int i = 0;; i++) {
 			//reach end of currKey
 			if (i == currKey.size()) {
 				if (i != key.size())	//if key is longer, go to next node
-					search(key.substr(i), value, curr->m_next[key[i]]);
+					return search(key.substr(i), curr->m_next[key[i]]);
 
 				else {	//if both end at same time
 					//return value
-					
-					if (curr->m_value != nullptr) {	//if a value already stored here, delete
-						delete curr->m_value;
-					}
-					curr->m_value = new ValueType(value);
-					curr->isEnd = true;
+					if (curr->isEnd)
+						return curr->m_value;
+					return nullptr;
 				}
-				return;
 			}
 
-			//reach end of inputted key
-			else if (i == key.size()) {
-				
-			}
-
-			//if neither is at end of string
-			else if (key[i] != currKey[i]) {
-				
-
-				return;
+			//reach end of inputted key or don't match
+			else if (i == key.size() || key[i] != currKey[i]) {
+				return nullptr;
 			}
 		}
 	}
@@ -175,8 +156,6 @@ private:
 	}
 
 	Node* m_root;
-	
-	std::unordered_map<std::string, ValueType>* m_map;
 };
 
 

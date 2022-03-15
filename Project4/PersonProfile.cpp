@@ -8,13 +8,7 @@ using namespace std;
 PersonProfile::PersonProfile(std::string name, std::string email)
 	: m_name(name), m_email(email), m_numPairs(0) {}
 
-PersonProfile::~PersonProfile() {
-	/*int size = m_sets.size();
-	for(int i = size - 1; i >= 0; i--) {
-		delete m_sets[i];
-		m_sets.pop_back();
-	}*/
-}
+PersonProfile::~PersonProfile() {}
 
 string PersonProfile::GetName() const {
 	return m_name;
