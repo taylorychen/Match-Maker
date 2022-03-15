@@ -20,7 +20,6 @@ public:
 		int threshold) const;
 
 private:
-	//unordered set?
 	const MemberDatabase* m_database;
 	const AttributeTranslator* m_translator;
 };

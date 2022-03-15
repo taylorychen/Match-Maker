@@ -95,5 +95,3 @@ bool isBetterMatch(const EmailCount& a, const EmailCount& b) {
 			return true;
 	return false;
 }
-
-//TODO: binary search for first less than threshold

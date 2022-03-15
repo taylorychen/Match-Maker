@@ -1,4 +1,4 @@
-#define TEST_TREE
+//#define TEST_TREE
 #ifdef TEST_TREE
 
 #include "RadixTree.h"
